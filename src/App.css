@@ -39,6 +39,8 @@ body {
   left: 0%;
   //border: solid 4px red;*/
   /*animation: doDrift 16s infinite;*/
+  width: 100vw;
+  height: 100vh;
 }
 
 .box-bob {

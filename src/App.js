@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import * as ReactDOM from 'react-dom';
 
 function App() {
-  const DELAY = 1500;
+  const DELAY = 500;
   // const [top, setTop] = React.useState(Math.floor(Math.random() * 100))
   // const [left, setLeft] = React.useState(Math.floor(Math.random() * 75))
   const [top, setTop] = useState(0)
@@ -13,19 +13,18 @@ function App() {
   const [leftDirection, setLeftDirection] = useState(1)
   const MAX_WIDTH = window.innerWidth;
   const MAX_HEIGHT = window.innerHeight;
-  const ELEMENT_HEIGHT = 100;
-  const ELEMENT_WIDTH = 100;
+  const ELEMENT_HEIGHT = 0;
+  const ELEMENT_WIDTH = 0;
+  const STEP = 150;
 
-  function changePosition(number = 200) {
-    const newPositionX = (Math.floor(Math.random() * number) + 100) * leftDirection;
-    const newPositionY = (Math.floor(Math.random() * number) + 100) * topDirection;
+  function changePosition(number = 50) {
+    const newPositionX = (Math.floor(Math.random() * number) + 50) * leftDirection;
+    const newPositionY = (Math.floor(Math.random() * number) + 50) * topDirection;
 
     if (top + ELEMENT_HEIGHT + newPositionY - MAX_HEIGHT >= 0) {
       setTopDirection(-1);
     } else if (top - ELEMENT_HEIGHT + newPositionY <= 0) {
       setTopDirection(1);
-    } else {
-      
     }
 
     if (left + ELEMENT_WIDTH + newPositionX - MAX_WIDTH >= 0) {
@@ -43,9 +42,31 @@ function App() {
 
     return () => clearInterval(interval)
   });
+  
+  function adjustPosition(e) {
+    if (e.keyCode === 40) {
+      setTop(top + STEP)
+    } else if (e.keyCode === 38) {
+      setTop(top - STEP)
+    } else if (e.keyCode === 39) {
+      setLeft(left + STEP)
+    } else if (e.keyCode === 37) {
+      setLeft(left - STEP)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("keydown", adjustPosition);
+    return () => {
+        window.removeEventListener("keydown", adjustPosition);
+    };
+  }, [adjustPosition]);
+
 
   return (
-    <div className="box-drift">
+    <div
+      className="box-drift"
+    >
       <div 
         id='ferry'
         className="box-bob"
